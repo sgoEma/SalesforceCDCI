@@ -1,0 +1,37 @@
+# This file is a sample build configuration for Docker.
+# See the guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+image: salesforce/salesforcedx
+clone:
+  depth: full
+pipelines:
+
+  custom: # Pipelines that are triggered manually
+
+    deploy-to-scratch:
+     - step:
+        script:
+          #TBD#
+          #Creates scratch org
+          - sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --wait 10 --durationdays 1
+          - sfdx force:org:display --targetusername ciorg
+          #Pushes source to scratch org
+          - sfdx force:source:push --targetusername ciorg
+          #Runs unit tests on scratch org
+          - sfdx force:apex:test:run --targetusername ciorg --wait 10 --resultformat tap --codecoverage --testlevel $TESTLEVEL
+          #Deletes scratch org
+          - sfdx force:org:delete --targetusername ciorg --noprompt
+
+    validate-deployment: # The name that is displayed in the list in the Github Cloud GUI
+      - step:
+          script:
+            #Call delta build
+            - chmod +x build.sh
+            - ./build.sh $DECRYPTION_KEY $DECRYPTION_IV $BRANCH_NAME main https://login.salesforce.com $CONSUMER_KEY $USER_NAME -c
+    
+    deploy-to-target: # The name that is displayed in the list in the Github GUI
+      - step:
+          script:
+            #Call delta build
+            - chmod +x build.sh
+            - ./build.sh $DECRYPTION_KEY $DECRYPTION_IV $BRANCH_NAME main https://login.salesforce.com $CONSUMER_KEY $USER_NAME
