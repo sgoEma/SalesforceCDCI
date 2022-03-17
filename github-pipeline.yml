@@ -27,11 +27,11 @@ pipelines:
           script:
             #Call delta build
             - chmod +x build.sh
-            - ./build.sh $DECRYPTION_KEY $DECRYPTION_IV $BRANCH_NAME main https://login.salesforce.com $CONSUMER_KEY_TEST $USER_NAME_TEST -c
+            - ./build.sh $DECRYPTION_KEY $DECRYPTION_IV $BRANCH_NAME main https://login.salesforce.com $CONSUMER_KEY $USER_NAME -c
     
     deploy-to-target: # The name that is displayed in the list in the Github GUI
       - step:
           script:
             #Call delta build
             - chmod +x build.sh
-            - ./build.sh $DECRYPTION_KEY $DECRYPTION_IV $BRANCH_NAME main https://login.salesforce.com $CONSUMER_KEY_TEST $USER_NAME_TEST
+            - ./build.sh $DECRYPTION_KEY $DECRYPTION_IV $BRANCH_NAME main https://login.salesforce.com $CONSUMER_KEY $USER_NAME
