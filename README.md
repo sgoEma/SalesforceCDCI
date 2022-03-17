@@ -20,6 +20,8 @@ The `sfdx-project.json` file contains useful configuration information for your 
 
 ## Server Pass Key Creation
 https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm
+
+Generated crt file should be attached to the connected app
 ## GET IV and KEY
 - $ openssl enc -aes-256-cbc -k <passphrase here> -P -md sha1 -nosalt
 ## Encrypt ServerKey file using the command
